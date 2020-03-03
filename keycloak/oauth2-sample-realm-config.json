@@ -41,7 +41,7 @@
   "roles": {
     "realm": [
       {
-        "id": "ff6a37df-afe6-4d44-8d7b-2c487e5068e3",
+        "id": "17de655e-5553-4230-a4fe-72c464e32d98",
         "name": "offline_access",
         "description": "${role_offline-access}",
         "composite": false,
@@ -50,7 +50,7 @@
         "attributes": {}
       },
       {
-        "id": "4ad191f5-23a3-4757-bfb2-8bddbf0f32c7",
+        "id": "577a2159-f27a-45c2-91fc-f89ed82c0f0a",
         "name": "uma_authorization",
         "composite": false,
         "clientRole": false,
@@ -60,10 +60,6 @@
     ]
   },
   "groups": [],
-  "defaultRoles": [
-    "uma_authorization",
-    "offline_access"
-  ],
   "requiredCredentials": [
     "password"
   ],
@@ -77,14 +73,30 @@
     "FreeOTP",
     "Google Authenticator"
   ],
-  "scopeMappings": [
-    {
-      "clientScope": "offline_access",
-      "roles": [
-        "offline_access"
-      ]
-    }
+  "webAuthnPolicyRpEntityName": "keycloak",
+  "webAuthnPolicySignatureAlgorithms": [
+    "ES256"
   ],
+  "webAuthnPolicyRpId": "",
+  "webAuthnPolicyAttestationConveyancePreference": "not specified",
+  "webAuthnPolicyAuthenticatorAttachment": "not specified",
+  "webAuthnPolicyRequireResidentKey": "not specified",
+  "webAuthnPolicyUserVerificationRequirement": "not specified",
+  "webAuthnPolicyCreateTimeout": 0,
+  "webAuthnPolicyAvoidSameAuthenticatorRegister": false,
+  "webAuthnPolicyAcceptableAaguids": [],
+  "webAuthnPolicyPasswordlessRpEntityName": "keycloak",
+  "webAuthnPolicyPasswordlessSignatureAlgorithms": [
+    "ES256"
+  ],
+  "webAuthnPolicyPasswordlessRpId": "",
+  "webAuthnPolicyPasswordlessAttestationConveyancePreference": "not specified",
+  "webAuthnPolicyPasswordlessAuthenticatorAttachment": "not specified",
+  "webAuthnPolicyPasswordlessRequireResidentKey": "not specified",
+  "webAuthnPolicyPasswordlessUserVerificationRequirement": "not specified",
+  "webAuthnPolicyPasswordlessCreateTimeout": 0,
+  "webAuthnPolicyPasswordlessAvoidSameAuthenticatorRegister": false,
+  "webAuthnPolicyPasswordlessAcceptableAaguids": [],
   "clientScopes": [
     {
       "id": "f419019b-9664-45a8-85f6-ab7000a9aa85",
@@ -759,7 +771,7 @@
   "supportedLocales": [],
   "authenticationFlows": [
     {
-      "id": "f74d893e-582d-4741-990b-1ed69f85caee",
+      "id": "23d87c4f-4e0a-4b22-8cba-3f01cc4e7d68",
       "alias": "Handle Existing Account",
       "description": "Handle what to do if there is existing account with same email/username like authenticated identity provider",
       "providerId": "basic-flow",
@@ -774,15 +786,32 @@
           "autheticatorFlow": false
         },
         {
+          "requirement": "REQUIRED",
+          "priority": 20,
+          "flowAlias": "Handle Existing Account - Alternatives - 0",
+          "userSetupAllowed": false,
+          "autheticatorFlow": true
+        }
+      ]
+    },
+    {
+      "id": "6eb02c46-c271-482a-89f6-0f4c353c1e85",
+      "alias": "Handle Existing Account - Alternatives - 0",
+      "description": "Subflow of Handle Existing Account with alternative executions",
+      "providerId": "basic-flow",
+      "topLevel": false,
+      "builtIn": true,
+      "authenticationExecutions": [
+        {
           "authenticator": "idp-email-verification",
           "requirement": "ALTERNATIVE",
-          "priority": 20,
+          "priority": 10,
           "userSetupAllowed": false,
           "autheticatorFlow": false
         },
         {
           "requirement": "ALTERNATIVE",
-          "priority": 30,
+          "priority": 20,
           "flowAlias": "Verify Existing Account by Re-authentication",
           "userSetupAllowed": false,
           "autheticatorFlow": true
@@ -790,7 +819,7 @@
       ]
     },
     {
-      "id": "4eb1c74e-9b13-4c16-ab33-c33ff8db410e",
+      "id": "17c47346-e391-475c-ba95-197db4dc34ea",
       "alias": "Verify Existing Account by Re-authentication",
       "description": "Reauthentication of existing account",
       "providerId": "basic-flow",
@@ -805,8 +834,32 @@
           "autheticatorFlow": false
         },
         {
+          "requirement": "CONDITIONAL",
+          "priority": 20,
+          "flowAlias": "Verify Existing Account by Re-authentication - auth-otp-form - Conditional",
+          "userSetupAllowed": false,
+          "autheticatorFlow": true
+        }
+      ]
+    },
+    {
+      "id": "64c6dd8b-10b7-44cc-a59e-429ef610d20d",
+      "alias": "Verify Existing Account by Re-authentication - auth-otp-form - Conditional",
+      "description": "Flow to determine if the auth-otp-form authenticator should be used or not.",
+      "providerId": "basic-flow",
+      "topLevel": false,
+      "builtIn": true,
+      "authenticationExecutions": [
+        {
+          "authenticator": "conditional-user-configured",
+          "requirement": "REQUIRED",
+          "priority": 10,
+          "userSetupAllowed": false,
+          "autheticatorFlow": false
+        },
+        {
           "authenticator": "auth-otp-form",
-          "requirement": "OPTIONAL",
+          "requirement": "REQUIRED",
           "priority": 20,
           "userSetupAllowed": false,
           "autheticatorFlow": false
@@ -814,7 +867,7 @@
       ]
     },
     {
-      "id": "b0def7c5-d1ef-4c73-b296-31cdf92cd6dd",
+      "id": "953ae155-4e6c-4f19-b6e8-e78695245c62",
       "alias": "browser",
       "description": "browser based authentication",
       "providerId": "basic-flow",
@@ -852,7 +905,7 @@
       ]
     },
     {
-      "id": "3d8ddd9a-d752-45d5-a1da-f4ae94ef11d1",
+      "id": "84a48b7e-2ee4-4796-8612-9f3684fc5ca0",
       "alias": "clients",
       "description": "Base authentication for clients",
       "providerId": "client-flow",
@@ -890,7 +943,7 @@
       ]
     },
     {
-      "id": "b59c4d5d-788e-4e42-bf7a-3de05902c549",
+      "id": "55b8de51-1d8e-4203-8f54-f70f21003831",
       "alias": "direct grant",
       "description": "OpenID Connect Resource Owner Grant",
       "providerId": "basic-flow",
@@ -912,16 +965,40 @@
           "autheticatorFlow": false
         },
         {
-          "authenticator": "direct-grant-validate-otp",
-          "requirement": "OPTIONAL",
+          "requirement": "CONDITIONAL",
           "priority": 30,
+          "flowAlias": "direct grant - direct-grant-validate-otp - Conditional",
+          "userSetupAllowed": false,
+          "autheticatorFlow": true
+        }
+      ]
+    },
+    {
+      "id": "6782a9ed-155b-4d90-a1e8-6ea4d1998d0c",
+      "alias": "direct grant - direct-grant-validate-otp - Conditional",
+      "description": "Flow to determine if the direct-grant-validate-otp authenticator should be used or not.",
+      "providerId": "basic-flow",
+      "topLevel": false,
+      "builtIn": true,
+      "authenticationExecutions": [
+        {
+          "authenticator": "conditional-user-configured",
+          "requirement": "REQUIRED",
+          "priority": 10,
+          "userSetupAllowed": false,
+          "autheticatorFlow": false
+        },
+        {
+          "authenticator": "direct-grant-validate-otp",
+          "requirement": "REQUIRED",
+          "priority": 20,
           "userSetupAllowed": false,
           "autheticatorFlow": false
         }
       ]
     },
     {
-      "id": "6221534f-4f3c-40ec-aece-3babb459710f",
+      "id": "58ae6845-a1ff-4b97-911c-356a7c18ba5e",
       "alias": "docker auth",
       "description": "Used by Docker clients to authenticate against the IDP",
       "providerId": "basic-flow",
@@ -938,7 +1015,7 @@
       ]
     },
     {
-      "id": "69d4e252-f3b3-4d9c-875d-917a7d50e1ac",
+      "id": "097f9347-afc5-4aaf-af1a-79f50755b7b8",
       "alias": "first broker login",
       "description": "Actions taken after first broker login with identity provider account, which is not yet linked to any Keycloak account",
       "providerId": "basic-flow",
@@ -954,16 +1031,33 @@
           "autheticatorFlow": false
         },
         {
+          "requirement": "REQUIRED",
+          "priority": 20,
+          "flowAlias": "first broker login - Alternatives - 0",
+          "userSetupAllowed": false,
+          "autheticatorFlow": true
+        }
+      ]
+    },
+    {
+      "id": "0fbebe5b-a1bf-46e3-8dee-1ffde2759c4d",
+      "alias": "first broker login - Alternatives - 0",
+      "description": "Subflow of first broker login with alternative executions",
+      "providerId": "basic-flow",
+      "topLevel": false,
+      "builtIn": true,
+      "authenticationExecutions": [
+        {
           "authenticatorConfig": "create unique user config",
           "authenticator": "idp-create-user-if-unique",
           "requirement": "ALTERNATIVE",
-          "priority": 20,
+          "priority": 10,
           "userSetupAllowed": false,
           "autheticatorFlow": false
         },
         {
           "requirement": "ALTERNATIVE",
-          "priority": 30,
+          "priority": 20,
           "flowAlias": "Handle Existing Account",
           "userSetupAllowed": false,
           "autheticatorFlow": true
@@ -971,7 +1065,7 @@
       ]
     },
     {
-      "id": "b420eaeb-ba6f-4d10-974e-69b71003489f",
+      "id": "f803cc1c-cc9e-4e95-85f3-fb22684b77ce",
       "alias": "forms",
       "description": "Username, password, otp and other auth forms.",
       "providerId": "basic-flow",
@@ -986,8 +1080,32 @@
           "autheticatorFlow": false
         },
         {
+          "requirement": "CONDITIONAL",
+          "priority": 20,
+          "flowAlias": "forms - auth-otp-form - Conditional",
+          "userSetupAllowed": false,
+          "autheticatorFlow": true
+        }
+      ]
+    },
+    {
+      "id": "e323d51f-bf56-4604-952a-5f59ff090480",
+      "alias": "forms - auth-otp-form - Conditional",
+      "description": "Flow to determine if the auth-otp-form authenticator should be used or not.",
+      "providerId": "basic-flow",
+      "topLevel": false,
+      "builtIn": true,
+      "authenticationExecutions": [
+        {
+          "authenticator": "conditional-user-configured",
+          "requirement": "REQUIRED",
+          "priority": 10,
+          "userSetupAllowed": false,
+          "autheticatorFlow": false
+        },
+        {
           "authenticator": "auth-otp-form",
-          "requirement": "OPTIONAL",
+          "requirement": "REQUIRED",
           "priority": 20,
           "userSetupAllowed": false,
           "autheticatorFlow": false
@@ -995,7 +1113,7 @@
       ]
     },
     {
-      "id": "4189bdf6-2a20-468b-9b08-176ac5be639b",
+      "id": "d1e67d11-d3fb-4075-a09e-b840b395bc88",
       "alias": "http challenge",
       "description": "An authentication flow based on challenge-response HTTP Authentication Schemes",
       "providerId": "basic-flow",
@@ -1033,7 +1151,7 @@
       ]
     },
     {
-      "id": "9a452cca-6c58-4706-bb6d-99b29a613a18",
+      "id": "71b1b51d-c96b-4c10-9524-e5e6bfdc9b29",
       "alias": "registration",
       "description": "registration flow",
       "providerId": "basic-flow",
@@ -1051,7 +1169,7 @@
       ]
     },
     {
-      "id": "3c82b312-b153-46cb-b777-f71d69de1aa3",
+      "id": "929edfd3-0ca5-44a8-8702-c0525ac77ba3",
       "alias": "registration form",
       "description": "registration form",
       "providerId": "form-flow",
@@ -1089,7 +1207,7 @@
       ]
     },
     {
-      "id": "ef79b981-9ec5-4d69-8ec8-f1f7338192b3",
+      "id": "bc8b576a-d463-4bad-a23a-6ea01084d6ce",
       "alias": "reset credentials",
       "description": "Reset credentials for a user if they forgot their password or something",
       "providerId": "basic-flow",
@@ -1118,16 +1236,40 @@
           "autheticatorFlow": false
         },
         {
-          "authenticator": "reset-otp",
-          "requirement": "OPTIONAL",
+          "requirement": "CONDITIONAL",
           "priority": 40,
+          "flowAlias": "reset credentials - reset-otp - Conditional",
+          "userSetupAllowed": false,
+          "autheticatorFlow": true
+        }
+      ]
+    },
+    {
+      "id": "ed7dbfe0-3e46-411f-8324-4836bd549079",
+      "alias": "reset credentials - reset-otp - Conditional",
+      "description": "Flow to determine if the reset-otp authenticator should be used or not.",
+      "providerId": "basic-flow",
+      "topLevel": false,
+      "builtIn": true,
+      "authenticationExecutions": [
+        {
+          "authenticator": "conditional-user-configured",
+          "requirement": "REQUIRED",
+          "priority": 10,
+          "userSetupAllowed": false,
+          "autheticatorFlow": false
+        },
+        {
+          "authenticator": "reset-otp",
+          "requirement": "REQUIRED",
+          "priority": 20,
           "userSetupAllowed": false,
           "autheticatorFlow": false
         }
       ]
     },
     {
-      "id": "96920869-9d0e-4c60-88df-7d10b80f94fb",
+      "id": "3f24021d-83d3-41ae-8e53-2fcace1ea19c",
       "alias": "saml ecp",
       "description": "SAML ECP Profile Authentication Flow",
       "providerId": "basic-flow",
@@ -1146,14 +1288,14 @@
   ],
   "authenticatorConfig": [
     {
-      "id": "7fa8e4ef-dcab-4a1f-a377-99d59bf48baf",
+      "id": "eed6d6e7-c55d-4097-a4b3-3ae577a4f446",
       "alias": "create unique user config",
       "config": {
         "require.password.update.after.registration": "false"
       }
     },
     {
-      "id": "0ee28518-ed79-4ee1-a678-8b461c0a1854",
+      "id": "d9f3fd97-3bfc-4afa-9aa1-93ea192fd856",
       "alias": "review profile config",
       "config": {
         "update.profile.on.first.login": "missing"
@@ -1214,28 +1356,46 @@
   "clientAuthenticationFlow": "clients",
   "dockerAuthenticationFlow": "docker auth",
   "attributes": {
+    "displayName": "Keycloak OAuth 2.0 Sample",
+    "webAuthnPolicyAuthenticatorAttachment": "not specified",
+    "_browser_header.xRobotsTag": "none",
+    "webAuthnPolicyAttestationConveyancePreferencePasswordless": "not specified",
+    "webAuthnPolicyRequireResidentKeyPasswordless": "not specified",
+    "webAuthnPolicySignatureAlgorithmsPasswordless": "ES256",
+    "displayNameHtml": "<div class=\"kc-logo-text\"><span>Keycloak OAuth 2.0 Sample</span></div>",
+    "webAuthnPolicyRpEntityName": "keycloak",
+    "webAuthnPolicyAvoidSameAuthenticatorRegisterPasswordless": "false",
+    "failureFactor": "30",
+    "webAuthnPolicyAuthenticatorAttachmentPasswordless": "not specified",
+    "actionTokenGeneratedByUserLifespan": "300",
+    "maxDeltaTimeSeconds": "43200",
+    "webAuthnPolicySignatureAlgorithms": "ES256",
+    "webAuthnPolicyRpEntityNamePasswordless": "keycloak",
+    "offlineSessionMaxLifespan": "5184000",
+    "_browser_header.contentSecurityPolicyReportOnly": "",
+    "bruteForceProtected": "false",
+    "webAuthnPolicyRpIdPasswordless": "",
+    "_browser_header.contentSecurityPolicy": "frame-src 'self'; frame-ancestors 'self'; object-src 'none';",
     "_browser_header.xXSSProtection": "1; mode=block",
     "_browser_header.xFrameOptions": "SAMEORIGIN",
     "_browser_header.strictTransportSecurity": "max-age=31536000; includeSubDomains",
+    "webAuthnPolicyUserVerificationRequirement": "not specified",
     "permanentLockout": "false",
     "quickLoginCheckMilliSeconds": "1000",
-    "displayName": "Keycloak OAuth 2.0 Sample",
-    "_browser_header.xRobotsTag": "none",
+    "webAuthnPolicyCreateTimeout": "0",
+    "webAuthnPolicyRequireResidentKey": "not specified",
+    "webAuthnPolicyRpId": "",
+    "webAuthnPolicyAttestationConveyancePreference": "not specified",
     "maxFailureWaitSeconds": "900",
     "minimumQuickLoginWaitSeconds": "60",
-    "displayNameHtml": "<div class=\"kc-logo-text\"><span>Keycloak OAuth 2.0 Sample</span></div>",
-    "failureFactor": "30",
-    "actionTokenGeneratedByUserLifespan": "300",
-    "maxDeltaTimeSeconds": "43200",
+    "webAuthnPolicyCreateTimeoutPasswordless": "0",
+    "webAuthnPolicyAvoidSameAuthenticatorRegister": "false",
+    "webAuthnPolicyUserVerificationRequirementPasswordless": "not specified",
     "_browser_header.xContentTypeOptions": "nosniff",
-    "offlineSessionMaxLifespan": "5184000",
     "actionTokenGeneratedByAdminLifespan": "43200",
-    "_browser_header.contentSecurityPolicyReportOnly": "",
-    "bruteForceProtected": "false",
-    "_browser_header.contentSecurityPolicy": "frame-src 'self'; frame-ancestors 'self'; object-src 'none';",
     "waitIncrementSeconds": "60",
     "offlineSessionMaxLifespanEnabled": "false"
   },
-  "keycloakVersion": "7.0.0",
+  "keycloakVersion": "9.0.0",
   "userManagedAccessAllowed": false
 }
