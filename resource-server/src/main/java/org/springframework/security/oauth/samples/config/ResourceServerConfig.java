@@ -25,9 +25,9 @@ import org.springframework.security.config.annotation.web.configuration.WebSecur
 @EnableWebSecurity
 public class ResourceServerConfig extends WebSecurityConfigurerAdapter {
 
-	// @formatter:off
-	@Override
-	protected void configure(HttpSecurity http) throws Exception {
+    @Override
+    protected void configure(HttpSecurity http) throws Exception {
+        // @formatter:off
 		http
 			.mvcMatcher("/messages/**")
 			.authorizeRequests()
@@ -35,6 +35,6 @@ public class ResourceServerConfig extends WebSecurityConfigurerAdapter {
 				.and()
 			.oauth2ResourceServer()
 				.jwt();
-	}
-	// @formatter:on
+		// @formatter:on
+    }
 }
